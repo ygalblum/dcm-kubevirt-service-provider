@@ -6,7 +6,6 @@ import (
 	"net/http"
 
 	"github.com/google/uuid"
-	openapi_types "github.com/oapi-codegen/runtime/types"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -81,7 +80,7 @@ var _ = Describe("KubevirtHandler", func() {
 		h        *KubevirtHandler
 		ctx      context.Context
 		testID   string
-		testUUID openapi_types.UUID
+		testUUID uuid.UUID
 	)
 
 	BeforeEach(func() {
@@ -90,7 +89,7 @@ var _ = Describe("KubevirtHandler", func() {
 		h = NewKubevirtHandler(client, mapper)
 		ctx = context.Background()
 		testID = "00000000-0000-0000-0000-000000000001"
-		testUUID = openapi_types.UUID(uuid.MustParse(testID))
+		testUUID = uuid.MustParse(testID)
 	})
 
 	Describe("GetHealth", func() {
@@ -189,7 +188,7 @@ var _ = Describe("KubevirtHandler", func() {
 				},
 			}
 			request = server.CreateVMRequestObject{
-				Params: server.CreateVMParams{Id: &testUUID},
+				Params: server.CreateVMParams{Id: &testID},
 				Body:   &body,
 			}
 		})
