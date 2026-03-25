@@ -142,7 +142,7 @@ func (s *KubevirtHandler) CreateVM(ctx context.Context, request server.CreateVMR
 // (DELETE /vms/{vmId})
 func (s *KubevirtHandler) DeleteVM(ctx context.Context, request server.DeleteVMRequestObject) (server.DeleteVMResponseObject, error) {
 	// Delete the VM
-	err := s.kubevirtClient.DeleteVirtualMachine(ctx, request.VmId.String())
+	err := s.kubevirtClient.DeleteVirtualMachine(ctx, request.VmId)
 	if err != nil {
 		return kubevirt.MapKubernetesErrorForDelete(err), nil
 	}
@@ -152,7 +152,7 @@ func (s *KubevirtHandler) DeleteVM(ctx context.Context, request server.DeleteVMR
 
 // (GET /vms/{vmId})
 func (s *KubevirtHandler) GetVM(ctx context.Context, request server.GetVMRequestObject) (server.GetVMResponseObject, error) {
-	vmID := request.VmId.String()
+	vmID := request.VmId
 
 	vm, err := s.kubevirtClient.GetVirtualMachine(ctx, vmID)
 	if err != nil {

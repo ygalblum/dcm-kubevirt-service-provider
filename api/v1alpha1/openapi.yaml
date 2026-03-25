@@ -134,7 +134,6 @@ paths:
           description: Unique identifier of the VM
           schema:
             type: string
-            format: uuid
       responses:
         '200':
           description: Successful operation
@@ -173,7 +172,6 @@ paths:
           description: Unique identifier of the VM to delete
           schema:
             type: string
-            format: uuid
       responses:
         '204':
           description: VM deleted successfully

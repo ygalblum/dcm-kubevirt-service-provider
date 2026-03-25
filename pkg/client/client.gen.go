@@ -15,7 +15,6 @@ import (
 
 	. "github.com/dcm-project/kubevirt-service-provider/api/v1alpha1"
 	"github.com/oapi-codegen/runtime"
-	openapi_types "github.com/oapi-codegen/runtime/types"
 )
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
@@ -103,10 +102,10 @@ type ClientInterface interface {
 	GetHealth(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DeleteVM request
-	DeleteVM(ctx context.Context, vmId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+	DeleteVM(ctx context.Context, vmId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetVM request
-	GetVM(ctx context.Context, vmId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+	GetVM(ctx context.Context, vmId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
 func (c *Client) ListVMs(ctx context.Context, params *ListVMsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -157,7 +156,7 @@ func (c *Client) GetHealth(ctx context.Context, reqEditors ...RequestEditorFn) (
 	return c.Client.Do(req)
 }
 
-func (c *Client) DeleteVM(ctx context.Context, vmId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+func (c *Client) DeleteVM(ctx context.Context, vmId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewDeleteVMRequest(c.Server, vmId)
 	if err != nil {
 		return nil, err
@@ -169,7 +168,7 @@ func (c *Client) DeleteVM(ctx context.Context, vmId openapi_types.UUID, reqEdito
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetVM(ctx context.Context, vmId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+func (c *Client) GetVM(ctx context.Context, vmId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetVMRequest(c.Server, vmId)
 	if err != nil {
 		return nil, err
@@ -336,7 +335,7 @@ func NewGetHealthRequest(server string) (*http.Request, error) {
 }
 
 // NewDeleteVMRequest generates requests for DeleteVM
-func NewDeleteVMRequest(server string, vmId openapi_types.UUID) (*http.Request, error) {
+func NewDeleteVMRequest(server string, vmId string) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -370,7 +369,7 @@ func NewDeleteVMRequest(server string, vmId openapi_types.UUID) (*http.Request, 
 }
 
 // NewGetVMRequest generates requests for GetVM
-func NewGetVMRequest(server string, vmId openapi_types.UUID) (*http.Request, error) {
+func NewGetVMRequest(server string, vmId string) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -458,10 +457,10 @@ type ClientWithResponsesInterface interface {
 	GetHealthWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetHealthResponse, error)
 
 	// DeleteVMWithResponse request
-	DeleteVMWithResponse(ctx context.Context, vmId openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteVMResponse, error)
+	DeleteVMWithResponse(ctx context.Context, vmId string, reqEditors ...RequestEditorFn) (*DeleteVMResponse, error)
 
 	// GetVMWithResponse request
-	GetVMWithResponse(ctx context.Context, vmId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetVMResponse, error)
+	GetVMWithResponse(ctx context.Context, vmId string, reqEditors ...RequestEditorFn) (*GetVMResponse, error)
 }
 
 type ListVMsResponse struct {
@@ -621,7 +620,7 @@ func (c *ClientWithResponses) GetHealthWithResponse(ctx context.Context, reqEdit
 }
 
 // DeleteVMWithResponse request returning *DeleteVMResponse
-func (c *ClientWithResponses) DeleteVMWithResponse(ctx context.Context, vmId openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteVMResponse, error) {
+func (c *ClientWithResponses) DeleteVMWithResponse(ctx context.Context, vmId string, reqEditors ...RequestEditorFn) (*DeleteVMResponse, error) {
 	rsp, err := c.DeleteVM(ctx, vmId, reqEditors...)
 	if err != nil {
 		return nil, err
@@ -630,7 +629,7 @@ func (c *ClientWithResponses) DeleteVMWithResponse(ctx context.Context, vmId ope
 }
 
 // GetVMWithResponse request returning *GetVMResponse
-func (c *ClientWithResponses) GetVMWithResponse(ctx context.Context, vmId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetVMResponse, error) {
+func (c *ClientWithResponses) GetVMWithResponse(ctx context.Context, vmId string, reqEditors ...RequestEditorFn) (*GetVMResponse, error) {
 	rsp, err := c.GetVM(ctx, vmId, reqEditors...)
 	if err != nil {
 		return nil, err

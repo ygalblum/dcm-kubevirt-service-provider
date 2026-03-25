@@ -13,7 +13,6 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/oapi-codegen/runtime"
 	strictnethttp "github.com/oapi-codegen/runtime/strictmiddleware/nethttp"
-	openapi_types "github.com/oapi-codegen/runtime/types"
 )
 
 // Defines values for ServiceType.
@@ -962,10 +961,10 @@ type ServerInterface interface {
 	GetHealth(w http.ResponseWriter, r *http.Request)
 	// Delete a VM
 	// (DELETE /vms/{vmId})
-	DeleteVM(w http.ResponseWriter, r *http.Request, vmId openapi_types.UUID)
+	DeleteVM(w http.ResponseWriter, r *http.Request, vmId string)
 	// Get a VM
 	// (GET /vms/{vmId})
-	GetVM(w http.ResponseWriter, r *http.Request, vmId openapi_types.UUID)
+	GetVM(w http.ResponseWriter, r *http.Request, vmId string)
 }
 
 // Unimplemented server implementation that returns http.StatusNotImplemented for each endpoint.
@@ -992,13 +991,13 @@ func (_ Unimplemented) GetHealth(w http.ResponseWriter, r *http.Request) {
 
 // Delete a VM
 // (DELETE /vms/{vmId})
-func (_ Unimplemented) DeleteVM(w http.ResponseWriter, r *http.Request, vmId openapi_types.UUID) {
+func (_ Unimplemented) DeleteVM(w http.ResponseWriter, r *http.Request, vmId string) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
 // Get a VM
 // (GET /vms/{vmId})
-func (_ Unimplemented) GetVM(w http.ResponseWriter, r *http.Request, vmId openapi_types.UUID) {
+func (_ Unimplemented) GetVM(w http.ResponseWriter, r *http.Request, vmId string) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
@@ -1093,7 +1092,7 @@ func (siw *ServerInterfaceWrapper) DeleteVM(w http.ResponseWriter, r *http.Reque
 	var err error
 
 	// ------------- Path parameter "vmId" -------------
-	var vmId openapi_types.UUID
+	var vmId string
 
 	err = runtime.BindStyledParameterWithOptions("simple", "vmId", chi.URLParam(r, "vmId"), &vmId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
 	if err != nil {
@@ -1118,7 +1117,7 @@ func (siw *ServerInterfaceWrapper) GetVM(w http.ResponseWriter, r *http.Request)
 	var err error
 
 	// ------------- Path parameter "vmId" -------------
-	var vmId openapi_types.UUID
+	var vmId string
 
 	err = runtime.BindStyledParameterWithOptions("simple", "vmId", chi.URLParam(r, "vmId"), &vmId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
 	if err != nil {
@@ -1381,7 +1380,7 @@ func (response GetHealth200JSONResponse) VisitGetHealthResponse(w http.ResponseW
 }
 
 type DeleteVMRequestObject struct {
-	VmId openapi_types.UUID `json:"vmId"`
+	VmId string `json:"vmId"`
 }
 
 type DeleteVMResponseObject interface {
@@ -1427,7 +1426,7 @@ func (response DeleteVMdefaultApplicationProblemPlusJSONResponse) VisitDeleteVMR
 }
 
 type GetVMRequestObject struct {
-	VmId openapi_types.UUID `json:"vmId"`
+	VmId string `json:"vmId"`
 }
 
 type GetVMResponseObject interface {
@@ -1605,7 +1604,7 @@ func (sh *strictHandler) GetHealth(w http.ResponseWriter, r *http.Request) {
 }
 
 // DeleteVM operation middleware
-func (sh *strictHandler) DeleteVM(w http.ResponseWriter, r *http.Request, vmId openapi_types.UUID) {
+func (sh *strictHandler) DeleteVM(w http.ResponseWriter, r *http.Request, vmId string) {
 	var request DeleteVMRequestObject
 
 	request.VmId = vmId
@@ -1631,7 +1630,7 @@ func (sh *strictHandler) DeleteVM(w http.ResponseWriter, r *http.Request, vmId o
 }
 
 // GetVM operation middleware
-func (sh *strictHandler) GetVM(w http.ResponseWriter, r *http.Request, vmId openapi_types.UUID) {
+func (sh *strictHandler) GetVM(w http.ResponseWriter, r *http.Request, vmId string) {
 	var request GetVMRequestObject
 
 	request.VmId = vmId

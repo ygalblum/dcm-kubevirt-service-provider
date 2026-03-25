@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/google/uuid"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -79,8 +78,7 @@ var _ = Describe("KubevirtHandler", func() {
 		mapper   *mockVMMapper
 		h        *KubevirtHandler
 		ctx      context.Context
-		testID   string
-		testUUID uuid.UUID
+		testID string
 	)
 
 	BeforeEach(func() {
@@ -89,7 +87,6 @@ var _ = Describe("KubevirtHandler", func() {
 		h = NewKubevirtHandler(client, mapper)
 		ctx = context.Background()
 		testID = "00000000-0000-0000-0000-000000000001"
-		testUUID = uuid.MustParse(testID)
 	})
 
 	Describe("GetHealth", func() {
@@ -248,7 +245,7 @@ var _ = Describe("KubevirtHandler", func() {
 				return nil
 			}
 
-			resp, err := h.DeleteVM(ctx, server.DeleteVMRequestObject{VmId: testUUID})
+			resp, err := h.DeleteVM(ctx, server.DeleteVMRequestObject{VmId: testID})
 
 			Expect(err).NotTo(HaveOccurred())
 			_, ok := resp.(server.DeleteVM204Response)
@@ -260,7 +257,7 @@ var _ = Describe("KubevirtHandler", func() {
 				return newNotFoundError()
 			}
 
-			resp, err := h.DeleteVM(ctx, server.DeleteVMRequestObject{VmId: testUUID})
+			resp, err := h.DeleteVM(ctx, server.DeleteVMRequestObject{VmId: testID})
 
 			Expect(err).NotTo(HaveOccurred())
 			notFoundResp, ok := resp.(server.DeleteVM404ApplicationProblemPlusJSONResponse)
@@ -273,7 +270,7 @@ var _ = Describe("KubevirtHandler", func() {
 				return fmt.Errorf("connection refused")
 			}
 
-			resp, err := h.DeleteVM(ctx, server.DeleteVMRequestObject{VmId: testUUID})
+			resp, err := h.DeleteVM(ctx, server.DeleteVMRequestObject{VmId: testID})
 
 			Expect(err).NotTo(HaveOccurred())
 			errResp, ok := resp.(server.DeleteVMdefaultApplicationProblemPlusJSONResponse)
@@ -291,7 +288,7 @@ var _ = Describe("KubevirtHandler", func() {
 				return newTestVMSpec(), nil
 			}
 
-			resp, err := h.GetVM(ctx, server.GetVMRequestObject{VmId: testUUID})
+			resp, err := h.GetVM(ctx, server.GetVMRequestObject{VmId: testID})
 
 			Expect(err).NotTo(HaveOccurred())
 			vmResp, ok := resp.(server.GetVM200JSONResponse)
@@ -304,7 +301,7 @@ var _ = Describe("KubevirtHandler", func() {
 				return nil, newNotFoundError()
 			}
 
-			resp, err := h.GetVM(ctx, server.GetVMRequestObject{VmId: testUUID})
+			resp, err := h.GetVM(ctx, server.GetVMRequestObject{VmId: testID})
 
 			Expect(err).NotTo(HaveOccurred())
 			notFoundResp, ok := resp.(server.GetVM404ApplicationProblemPlusJSONResponse)
@@ -317,7 +314,7 @@ var _ = Describe("KubevirtHandler", func() {
 				return nil, fmt.Errorf("connection refused")
 			}
 
-			resp, err := h.GetVM(ctx, server.GetVMRequestObject{VmId: testUUID})
+			resp, err := h.GetVM(ctx, server.GetVMRequestObject{VmId: testID})
 
 			Expect(err).NotTo(HaveOccurred())
 			errResp, ok := resp.(server.GetVMdefaultApplicationProblemPlusJSONResponse)
@@ -333,7 +330,7 @@ var _ = Describe("KubevirtHandler", func() {
 				return nil, fmt.Errorf("conversion error")
 			}
 
-			resp, err := h.GetVM(ctx, server.GetVMRequestObject{VmId: testUUID})
+			resp, err := h.GetVM(ctx, server.GetVMRequestObject{VmId: testID})
 
 			Expect(err).NotTo(HaveOccurred())
 			errResp, ok := resp.(server.GetVMdefaultApplicationProblemPlusJSONResponse)
