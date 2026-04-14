@@ -34,9 +34,19 @@ This command will:
 
 ```bash
 make build
-
+```
 
 ### Example call
 ```
 curl -XPOST --data '{"vcpu": {"count": 1}, "memory": {"size": "1GB"}, "storage": {"disks": [{"name": "x", "capacity": "1GB"}]}, "guest_os": {"type": ""}, "metadata": {"name": "x"}, "service_type": "vm"}' -H 'Content-type: application/json'  http://localhost:8081/api/v1alpha1/vms
 ```
+
+### Releasing
+
+Images are pushed to `quay.io/dcm-project/kubevirt-service-provider`.
+See [Releasing](https://github.com/dcm-project/shared-workflows#release-flow)
+in shared-workflows for the full release process, tag behavior, and version conventions.
+
+## License
+
+Apache License 2.0. See [LICENSE](LICENSE) for details.
